@@ -1,27 +1,31 @@
 import config
 import tensorflow as tf
-import model
+import ast
+from model import Seq2SeqModel
 
 
 def create_model():
-	# prepare dataset
+	print("creating seq2seq model..")
+	# retrieve config.ini
 	c = config.getConfig()
-	print(c.get('DATASET', 'DATA_PATH'))
-
-	vocab_size = c.get('MODEL', 'VOCAB_SIZE')
-	target_vocab_size = c.get('MODEL', 'TRAGET_VOCAB_SIZE')
-	buckets = c.get('MODEL', 'BUCKETS')
-	size = c.get('MODEL', 'SIZE')
-	num_layers = c.get('MODEL', 'NUM_LAYERS')
-	batch_size = c.get('MODEL', 'BATCH_SIZE')
-
-	model = Seq2SeqModel(vocab_size, target_vocab_size, buckets, size=size, num_layers=num_layers, batch_size=batch_size)
+	# prepare dataset
+	source_vocab_size = c.getint('MODEL', 'SOURCE_VOCAB_SIZE')
+	target_vocab_size = c.getint('MODEL', 'TRAGET_VOCAB_SIZE')
+	buckets = ast.literal_eval(c.get('MODEL', 'BUCKETS'))
+	size = c.getint('MODEL', 'SIZE')
+	num_layers = c.getint('MODEL', 'NUM_LAYERS')
+	max_gradient_norm = c.getint('MODEL', 'MAX_GRADIENT_NORM')
+	batch_size = c.getint('MODEL', 'BATCH_SIZE')
+	learning_rate = c.getint('MODEL', 'LEARNING_RATE')
+	learning_rate_decay_factor = c.getint('MODEL', 'LEARNING_RATE_DECAY_FACTOR')
+	# build seq2seq model
+	model = Seq2SeqModel(source_vocab_size, target_vocab_size, buckets, size, num_layers, max_gradient_norm, batch_size, learning_rate, learning_rate_decay_factor)
 
 def train():
 	print("training bot..")
 
 	# Seq2SeqModel
-	model = create_model
+	model = create_model()
 
 	# Create a saver
 	## Ref: https://www.tensorflow.org/api_docs/python/tf/train/Saver
