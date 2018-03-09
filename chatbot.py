@@ -3,6 +3,7 @@ import tensorflow as tf
 import ast
 from model import Seq2SeqModel
 
+c = config.getConfig()
 
 def create_model():
 	print("creating seq2seq model..")
@@ -22,6 +23,15 @@ def create_model():
 	model = Seq2SeqModel(source_vocab_size, target_vocab_size, buckets, size, num_layers, max_gradient_norm, batch_size, learning_rate, learning_rate_decay_factor)
 	return model
 
+def check_saver_restore(sess, saver):
+	checkpoint_dir = c.get('SAVER', 'SAVER_PATH')
+	ckpt = tf.train.get_checkpoint_state(checkpoint_dir)
+    if ckpt and ckpt.model_checkpoint_path:
+    	print('restoring the previously trained parameters')
+        saver.restore(sess, ckpt.model_checkpoint_path)
+    else:
+        pass
+
 def train():
 	print("training bot..")
 
@@ -36,7 +46,12 @@ def train():
 	## Ref: https://www.tensorflow.org/api_docs/python/tf/Session
 	with tf.Session() as sess:
 		print('Running tf session')
+		# init variables 
 		sess.run(tf.global_variables_initializer())
+		# check if restoring variables is needed
+		## Ref: https://www.tensorflow.org/programmers_guide/saved_model
+		check_saver_restore(sess, saver)
+
 
 
 def main():
