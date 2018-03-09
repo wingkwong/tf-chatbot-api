@@ -19,7 +19,8 @@ def create_model():
 	learning_rate = c.getint('MODEL', 'LEARNING_RATE')
 	learning_rate_decay_factor = c.getint('MODEL', 'LEARNING_RATE_DECAY_FACTOR')
 	# build seq2seq model
-	return model = Seq2SeqModel(source_vocab_size, target_vocab_size, buckets, size, num_layers, max_gradient_norm, batch_size, learning_rate, learning_rate_decay_factor)
+	model = Seq2SeqModel(source_vocab_size, target_vocab_size, buckets, size, num_layers, max_gradient_norm, batch_size, learning_rate, learning_rate_decay_factor)
+	return model
 
 def train():
 	print("training bot..")
