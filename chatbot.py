@@ -3,12 +3,11 @@ import tensorflow as tf
 import ast
 from model import Seq2SeqModel
 
+# retrieve config.ini
 c = config.getConfig()
 
 def create_model():
 	print("creating seq2seq model..")
-	# retrieve config.ini
-	c = config.getConfig()
 	# prepare dataset
 	source_vocab_size = c.getint('MODEL', 'SOURCE_VOCAB_SIZE')
 	target_vocab_size = c.getint('MODEL', 'TRAGET_VOCAB_SIZE')
@@ -26,11 +25,11 @@ def create_model():
 def check_saver_restore(sess, saver):
 	checkpoint_dir = c.get('SAVER', 'SAVER_PATH')
 	ckpt = tf.train.get_checkpoint_state(checkpoint_dir)
-    if ckpt and ckpt.model_checkpoint_path:
-    	print('restoring the previously trained parameters')
-        saver.restore(sess, ckpt.model_checkpoint_path)
-    else:
-        pass
+	if ckpt and ckpt.model_checkpoint_path:
+		print('restoring the previously trained parameters')
+		saver.restore(sess, ckpt.model_checkpoint_path)
+	else:
+		pass
 
 def train():
 	print("training bot..")
