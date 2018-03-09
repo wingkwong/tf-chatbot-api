@@ -12,9 +12,8 @@ def train():
 	## TODO 
 
 	# Create a saver
-	## TODO
-	### Ref: https://www.tensorflow.org/api_docs/python/tf/train/Saver
-
+	## Ref: https://www.tensorflow.org/api_docs/python/tf/train/Saver
+	saver = tf.train.Saver()
 
 	# run tf session
 	## TODO
