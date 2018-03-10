@@ -1,4 +1,5 @@
 import config
+import random
 
 
 # retrieve config.ini
@@ -60,7 +61,34 @@ def get_questions_answers(id2line, convs):
 	return questions, answers
 
 
+def process(questions, answers):
+	# 2 encoders and 2 decoders for train and test
+	files = ['test.enc', 'test.dec', 'train.enc', 'train.dec']
+	# created a folder for storing them
+	make_dir(c.get('PROCESSED', 'PROCESSED_PATH'))
+	# prepare to write each file to PROCESSED_PATH
+	f = []
+	for file in files:
+		f.append(open(os.path.join(c.get('PROCESSED', 'PROCESSED_PATH'), file), 'w'))
+
+	# choose TRAINING_SIZE sets as testing sets
+	test_sets = random.sample([i for i in range(len(questions))], c.getInt('DATASET', 'TRAINING_SIZE'))
+	for i in range(len(questions)):
+		if i in test_sets:
+			# test set
+			files[0].write(questions[i] + '\n')
+			files[1].write(answers[i] + '\n')
+		else: 
+			# train set
+			files[2].write(questions[i] + '\n')
+			files[2].write(answers[i] + '\n')
+
+	for file in files:
+		file.close()
+
+
 def load():
 	id2line = get_id2line()
 	convs = get_convs()
 	questions, answers = get_questions_answers(id2line, convs)
+	process(questions, answers)
