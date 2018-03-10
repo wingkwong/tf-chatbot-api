@@ -2,6 +2,7 @@ import config
 import tensorflow as tf
 import ast
 from model import Seq2SeqModel
+import data
 
 # retrieve config.ini
 c = config.getConfig()
@@ -65,6 +66,9 @@ def train():
 
 def main():
 	print("chatbot.py starts..")
+	# load data
+	data.load()
+
 	train()
 	print("chatbot.py ends..")
 
