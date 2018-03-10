@@ -50,7 +50,17 @@ def train():
 		# check if restoring variables is needed
 		## Ref: https://www.tensorflow.org/programmers_guide/saved_model
 		check_saver_restore(sess, saver)
-
+		# running epochs 
+		epochs = c.getint('HYPERPARAMETERS', 'EPOCHS')
+		print(epochs)
+		for i in range(epochs):
+			try:
+				# run 1 batch
+				# output saver
+				# calculate loss
+			except KeyboardInterrupt:
+				# interrupted by user
+				# handling
 
 
 def main():
